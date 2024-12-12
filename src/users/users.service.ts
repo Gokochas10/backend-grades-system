@@ -10,18 +10,28 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
 
-    const user = await this.prismaService.usuarios.create({
-      data: {
+    const found = await this.prismaService.usuarios.findUnique({
+      where: {
         uid: createUserDto.uid,
-        rol: "ESTUDIANTE",
-        correo: createUserDto.email,
       },
     });
 
-    if (user) {
-      return user;
+    if (found) {
+      return found;
     } else {
-      return new HttpException('User not created', HttpStatus.BAD_REQUEST);
+      const user = await this.prismaService.usuarios.create({
+        data: {
+          uid: createUserDto.uid,
+          rol: "ESTUDIANTE",
+          correo: createUserDto.email,
+        },
+      });
+
+      if (user) {
+        return user;
+      } else {
+        return new HttpException('User not created', HttpStatus.BAD_REQUEST);
+      }
     }
   }
 
@@ -39,7 +49,16 @@ export class UsersService {
     }
   }
 
-  async deleteUser (uid:string) {
+  async findAll () {
+    const users = this.prismaService.usuarios.findMany();
+    if (users) {
+      return users;
+    } else {
+      return new HttpException('Users not found', HttpStatus.BAD_REQUEST);
+    }
+  }
+  
+  async deleteUser(uid: string) {
     const deleted = await this.prismaService.usuarios.delete({
       where: {
         uid: uid,
