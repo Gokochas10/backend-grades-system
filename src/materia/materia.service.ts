@@ -1,29 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMateriaDto } from './dto/create-materia.dto';
-import { UpdateMateriaDto } from './dto/update-materia.dto';
+
+import { PrismaService } from 'src/common/prisma.service';
 
 @Injectable()
 export class MateriaService {
   constructor(
-    prismaService: PrismaService,
+    private readonly prismaService: PrismaService,
   ) {}
-  create(createMateriaDto: CreateMateriaDto) {
-    return 'This action adds a new materia';
+ 
+
+  async findAll() {
+    return await this.prismaService.materias.findMany();
   }
 
-  findAll() {
-    return `This action returns all materia`;
+  async findOne(id: number) {
+    return await this.prismaService.materias.findUnique({
+      where: { id: id }
+      });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} materia`;
-  }
-
-  update(id: number, updateMateriaDto: UpdateMateriaDto) {
-    return `This action updates a #${id} materia`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} materia`;
-  }
+  
 }
