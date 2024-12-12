@@ -28,13 +28,12 @@ export class TasksService {
               nombre: true,
             }
           }
-
         }
       }
     );
 
     const estudents = await this.prismaService.usuarios.findMany({
-      where : {
+      where: {
         rol: "ESTUDIANTE"
       }
     });
@@ -51,7 +50,33 @@ export class TasksService {
       return mappedResult;
     } else {
       return new HttpException('Tasks not found', HttpStatus.BAD_REQUEST);
-    }  }
+    }
+  }
+
+  async findByStudent(uid: string) {
+    const tasks = await this.prismaService.tarea_estudiantes.findMany(
+      {
+        where: {
+          estudiante_uid: uid
+        },
+        select: {
+          tarea_id: true,
+          tareas: {
+            select: {
+              nombre: true,
+            }
+          }
+        }
+      }
+    );
+
+    if (tasks) {
+      return tasks;
+    } else {
+      return new HttpException('Tasks not found', HttpStatus.BAD_REQUEST);
+    }
+  }
+
 
   findOne(id: number) {
     return `This action returns a #${id} task`;

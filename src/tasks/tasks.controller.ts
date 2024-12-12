@@ -12,9 +12,14 @@ export class TasksController {
   //   return this.tasksService.create(createTaskDto);
   // }
 
-  @Get(':course_id')
+  @Get('course/:course_id')
   findAll(@Param('course_id') course_id: string) {
     return this.tasksService.findAllByCourse(course_id);
+  }
+
+  @Get('student/:uid')
+  findByStudent(@Param('uid') uid: string) {
+    return this.tasksService.findByStudent(uid);
   }
 
   // @Get(':id')
