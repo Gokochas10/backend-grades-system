@@ -9,9 +9,9 @@ export class MateriaController {
 
 
 
-  @Get()
-  findAll() {
-    return this.materiaService.findAll();
+  @Get(':id')
+  findAll(@Param('id') id: string) {
+    return this.materiaService.findAllByUid(id);
   }
 
   @Get(':id')
@@ -19,5 +19,8 @@ export class MateriaController {
     return this.materiaService.findOne(+id);
   }
 
- 
+  @Get(':id/estudiantes')
+  findByMateria(@Param('id') id: string) {
+    return this.materiaService.findByMateria(+id);
+  }
 }
