@@ -14,9 +14,17 @@ export class MateriaService {
       where: {
         estudiante_uid: uid
       },
-      include: {
-        materias: true
+      select: {
+        materia_id: true,
+        materias: {
+          select: {
+            nombre: true
+            
+          }
+        }
       }
+      
+      
     });
   }
 

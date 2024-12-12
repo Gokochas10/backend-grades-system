@@ -23,8 +23,6 @@ export class TasksService {
         select: {
           estudiante_uid: true,
           tarea_id: true,
-          nota: true,
-          observacion: true,
           tareas: {
             select: {
               nombre: true,
