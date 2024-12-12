@@ -12,8 +12,8 @@ export class TasksController {
   //   return this.tasksService.create(createTaskDto);
   // }
 
-  @Get()
-  findAll(@Param('course_id') course_id: number) {
+  @Get(':course_id')
+  findAll(@Param('course_id') course_id: string) {
     return this.tasksService.findAllByCourse(course_id);
   }
 
