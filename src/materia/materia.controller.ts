@@ -14,13 +14,14 @@ export class MateriaController {
     return this.materiaService.findAllByUid(id);
   }
 
-  @Get(':id')
+  @Get(':id/one')
   findOne(@Param('id') id: string) {
     return this.materiaService.findOne(+id);
   }
 
   @Get(':id/estudiantes')
-  findByMateria(@Param('id') id: string) {
+  findByMateria(@Param('id') id: number) {
+    console.log(id);
     return this.materiaService.findByMateria(+id);
   }
 }
