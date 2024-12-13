@@ -22,6 +22,13 @@ export class TasksController {
     return this.tasksService.findByStudent(uid);
   }
 
+  @Get('materia/:materia_id/:uid')
+  findAllByMateria(@Param('materia_id') materia_id: string, @Param('uid') uid: string) {
+    return this.tasksService.findAllByMateria(materia_id, uid);
+  }
+
+
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.tasksService.findOne(+id);

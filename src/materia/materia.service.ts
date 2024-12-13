@@ -10,7 +10,7 @@ export class MateriaService {
  
 
   async findAllByUid(uid: string) {
-    return await this.prismaService.materia_estudiantes.findMany({
+    const students =  await this.prismaService.materia_estudiantes.findMany({
       where: {
         estudiante_uid: uid
       },
@@ -18,14 +18,46 @@ export class MateriaService {
         materia_id: true,
         materias: {
           select: {
-            nombre: true
+            nombre: true,
+            tareas: {
+              select: {
+                tarea_estudiantes: {
+                  where: {
+                    estudiante_uid: uid
+                  },
+                  select: {
+                    nota: true,
+                  }
+                }
+              }
+            }
             
-          }
-        }
+          },
+          
+        },
       }
-      
-      
     });
+    
+
+    const avgGrade =  students.map((student) => {
+      const tareas = student.materias.tareas.map((tarea) => {
+        const notas = tarea.tarea_estudiantes.map((nota) => {
+          return nota.nota;
+        });
+        const avg = notas.reduce((a, b) => a + b, 0) / notas.length;
+        return avg;
+      });
+      return {
+        materia: student.materias.nombre,
+        materia_id: student.materia_id,
+        promedio: tareas.reduce((a, b) => a + b, 0) / tareas.length,
+      };
+    });
+
+  
+
+    return avgGrade;
+      
   }
 
   async findOne(id: number) {

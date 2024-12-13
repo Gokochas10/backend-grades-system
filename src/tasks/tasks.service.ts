@@ -77,6 +77,26 @@ export class TasksService {
     }
   }
 
+  async findAllByMateria(id: string, uid:string) {
+    return await this.prismaService.tareas.findMany({
+      where: {
+        materia_id: parseInt(id)
+      },
+      select: {
+        nombre: true,
+        descripcion: true,
+        tarea_estudiantes: {
+          where: {
+            estudiante_uid: uid
+          },
+          select: {
+            estado: true,
+          }
+        }
+      }
+    })
+  }
+
 
   findOne(id: number) {
     return `This action returns a #${id} task`;

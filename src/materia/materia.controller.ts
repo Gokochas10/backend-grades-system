@@ -10,8 +10,8 @@ export class MateriaController {
 
 
   @Get(':id')
-  findAll(@Param('id') id: string) {
-    return this.materiaService.findAllByUid(id);
+  async findAll(@Param('id') id: string) {
+    return await this.materiaService.findAllByUid(id);
   }
 
   @Get(':id/one')
